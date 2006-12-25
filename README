@@ -1,10 +1,10 @@
 = redcloth_template
 
-== Overview
+== Description
 
-This plugin registers a template handler for <tt>*.red</tt> files, which will be run
-through ERB and RedCloth, and enables you to use Textile and Markdown syntax directly
-in your views.
+This plugin registers a template handler for <tt>*.red</tt> files, which will
+be run through ERB and RedCloth, and enables you to use Textile and Markdown
+syntax directly in your views.
 
 == License
 
