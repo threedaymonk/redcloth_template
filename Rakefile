@@ -1,6 +1,8 @@
 require 'rake/testtask'
 require 'rake/rdoctask'
 
+task :default => :test
+
 desc 'Run unit tests'
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
