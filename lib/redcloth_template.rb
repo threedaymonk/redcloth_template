@@ -12,7 +12,7 @@ class RedCloth
     end
 
     def render(template, local_assigns)
-      output = @view.compile_and_render_template('rhtml', template, nil, local_assigns)
+      output = @view.render_template('erb', template, nil, local_assigns)
       RedCloth.new(output).to_html
     end
   end
