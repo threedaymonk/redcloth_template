@@ -3,8 +3,8 @@
 == Description
 
 This plugin registers a template handler for <tt>*.red</tt> files, which will
-be run through ERB and RedCloth, and enables you to use Textile and Markdown
-syntax directly in your views.
+be run through ERB and RedCloth, and enables you to use Textile syntax directly
+in your views.
 
 Note: this plugin requires at least RedCloth 4.0 (aka "SuperRedCloth")
 
