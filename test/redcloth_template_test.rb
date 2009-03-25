@@ -1,11 +1,9 @@
-# $Id$
-
 require 'test/unit'
-require 'rubygems'
+gem 'actionpack', '>=2.2.2'
 require 'action_controller'
 require 'action_controller/test_process'
 
-require 'init.rb'
+require File.join(File.dirname(__FILE__), '..', 'init')
 
 class TestController < ActionController::Base
   def show
@@ -24,13 +22,16 @@ class RedClothTemplateTest < Test::Unit::TestCase
     @controller = TestController.new
   end
 
-  def test_textile
+  def test_should_convert_textile_markup_to_html
     get :show, :id => 'textile'
-    assert_equal "<h1>hello</h1>", @response.body
+    assert_response :success
+    assert_match %r{<h1>hello</h1>}, @response.body
+    assert_match %r{<a href="http://example.com/">Link</a>}, @response.body
   end
 
-  def test_erb
+  def test_should_interpolate_erb_in_template
     get :show, :id => 'erb'
+    assert_response :success
     assert_equal "<p>2</p>", @response.body
   end
 end
