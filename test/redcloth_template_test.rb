@@ -1,5 +1,5 @@
 require 'test/unit'
-gem 'actionpack', '>=2.2.2'
+gem 'actionpack', '>=2.3.0'
 require 'action_controller'
 require 'action_controller/test_process'
 
@@ -15,12 +15,8 @@ end
 TestController.view_paths = [ File.dirname(__FILE__) + '/fixtures/' ]
 ActionController::Routing::Routes.reload rescue nil
 
-class RedClothTemplateTest < Test::Unit::TestCase
-  def setup
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-    @controller = TestController.new
-  end
+class RedClothTemplateTest < ActionController::TestCase
+  tests TestController
 
   def test_should_convert_textile_markup_to_html
     get :show, :id => 'textile'
