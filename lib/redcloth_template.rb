@@ -1,5 +1,11 @@
 require 'redcloth'
-require 'rdiscount'
+begin
+  require 'rdiscount'
+  ::BlueCloth = ::RDiscount unless defined?(::BlueCloth)
+rescue LoadError
+  require 'bluecloth'
+  warn "Using bluecloth for Markdown rendering. Install rdiscount for better performance."
+end
 
 module ActionView
   module TemplateHandlers
@@ -28,7 +34,7 @@ module ActionView
         %{
           interpolated = ::ERB.new(template.source, nil, "#{erb_trim_mode}").result(binding)
           interpolated.sub!(/\A#coding:.*\n/, '') if RUBY_VERSION >= '1.9'
-          ::RDiscount.new(interpolated).to_html
+          ::BlueCloth.new(interpolated).to_html
         }
       end
     end
