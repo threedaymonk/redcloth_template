@@ -17,14 +17,16 @@ module ActionView
           ::#{klass}.new(interpolated).to_html
         }
       end
+
+      def self.included(base)
+        base.__send__(:cattr_accessor, :erb_trim_mode)
+        base.__send__(:erb_trim_mode=, '-')
+      end
     end
 
     class TextileTemplate < TemplateHandler
       include Compilable
       include RedClothCompiler
-
-      cattr_accessor :erb_trim_mode
-      self.erb_trim_mode = '-'
 
       def compile(template)
         compile_with_renderer(RedCloth, template)
@@ -34,9 +36,6 @@ module ActionView
     class MarkdownTemplate < TemplateHandler
       include Compilable
       include RedClothCompiler
-
-      cattr_accessor :erb_trim_mode
-      self.erb_trim_mode = '-'
 
       def compile(template)
         compile_with_renderer(BlueCloth, template)
