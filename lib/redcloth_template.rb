@@ -9,33 +9,37 @@ end
 
 module ActionView
   module TemplateHandlers
+    module RedClothCompiler
+      def compile_with_renderer(klass, template)
+        %{
+          interpolated = ::ERB.new(template.source, nil, "#{erb_trim_mode}").result(binding)
+          interpolated.sub!(/\A#coding:.*\n/, '') if RUBY_VERSION >= '1.9'
+          ::#{klass}.new(interpolated).to_html
+        }
+      end
+    end
+
     class TextileTemplate < TemplateHandler
       include Compilable
+      include RedClothCompiler
 
       cattr_accessor :erb_trim_mode
       self.erb_trim_mode = '-'
 
       def compile(template)
-        %{
-          interpolated = ::ERB.new(template.source, nil, "#{erb_trim_mode}").result(binding)
-          interpolated.sub!(/\A#coding:.*\n/, '') if RUBY_VERSION >= '1.9'
-          ::RedCloth.new(interpolated).to_html
-        }
+        compile_with_renderer(RedCloth, template)
       end
     end
 
     class MarkdownTemplate < TemplateHandler
       include Compilable
+      include RedClothCompiler
 
       cattr_accessor :erb_trim_mode
       self.erb_trim_mode = '-'
 
       def compile(template)
-        %{
-          interpolated = ::ERB.new(template.source, nil, "#{erb_trim_mode}").result(binding)
-          interpolated.sub!(/\A#coding:.*\n/, '') if RUBY_VERSION >= '1.9'
-          ::BlueCloth.new(interpolated).to_html
-        }
+        compile_with_renderer(BlueCloth, template)
       end
     end
   end
